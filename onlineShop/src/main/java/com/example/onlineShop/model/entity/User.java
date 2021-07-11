@@ -3,6 +3,7 @@ package com.example.onlineShop.model.entity;
 import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Класс, описывающий пользователя
@@ -73,4 +74,16 @@ public class User {
      */
     @Column(name = "birth_date")
     private LocalDate birthDate;
+
+    /**
+     * Связываем пользователя с ролями
+     * @see Role
+     */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles;
 }
