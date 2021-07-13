@@ -23,7 +23,7 @@ public class ProductController {
      *
      * @return Имя файла шаблона
      */
-    @GetMapping(value = "products")
+    @GetMapping(value = "")
     public String findAllProducts(Model model) {
         model.addAttribute("products", repository.findAll());
         return "products";

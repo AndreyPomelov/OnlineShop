@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 /**
  * Конфигурация Security
@@ -44,7 +45,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .cors().disable()
-                .formLogin().disable()
+                .formLogin()
+                .loginPage("/login")
+                .successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
+                .and()
                 .httpBasic()
                 .and()
                 .authorizeRequests()

@@ -13,7 +13,6 @@
         <th>Price</th>
     </tr>
     <tr th:each="c : ${products}">
-        <td th:text="${c.getId()}"></td>
         <td th:text="${c.getTitle()}"></td>
         <td th:text="${c.getDescription()}"></td>
         <td th:text="${c.getPrice()}"></td>
