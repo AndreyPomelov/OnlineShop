@@ -1,5 +1,6 @@
 package com.example.onlineShop.configuration;
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import javax.sql.DataSource;
 
 /**
  * Конфигурация Security
@@ -18,7 +20,10 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@AllArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    private final DataSource dataSource;
 
     @Bean
     @Override
@@ -28,11 +33,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder())
-                .withUser("admin")
-                .password(passwordEncoder().encode("qwe"))
-                .roles("ADMIN");
+        auth.jdbcAuthentication().dataSource(dataSource);
+//        auth.inMemoryAuthentication()
+//                .passwordEncoder(passwordEncoder())
+//                .withUser("admin")
+//                .password(passwordEncoder().encode("qwe"))
+//                .roles("ADMIN");
     }
 
     @Bean
@@ -52,8 +58,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/").hasAnyRole("ADMIN", "MANAGER")
+                .antMatchers("/").hasAnyRole("USER")
                 .antMatchers("/users").hasAnyRole("ADMIN")
-                .anyRequest().permitAll();
+                .antMatchers("/admin/**").hasAnyRole("ADMIN");
     }
 }
