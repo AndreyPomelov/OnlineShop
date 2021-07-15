@@ -25,6 +25,7 @@ public class ShopController {
      * @return Имя файла шаблона
      */
     @GetMapping(value = "/products")
+    // В целях тестирования пока только для админа
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String findAllProducts(Model model) {
         model.addAttribute("products", repository.findAll());
