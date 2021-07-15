@@ -1,46 +1,36 @@
 CREATE TABLE `shop`.`product` (
-                                  `product_id` INT NOT NULL AUTO_INCREMENT,
-                                  `title` VARCHAR(64) NOT NULL,
-                                  `description` VARCHAR(512) NOT NULL,
-                                  `price` DECIMAL(10,2) NOT NULL,
-                                  PRIMARY KEY (`product_id`));
+                                `product_id` INT NOT NULL AUTO_INCREMENT,
+                                `title` VARCHAR(45) NOT NULL,
+                                `description` VARCHAR(500) NOT NULL,
+                                `price` DECIMAL(10,2) NOT NULL,
+                                `photo` VARCHAR(45) NOT NULL,
+                                PRIMARY KEY (`product_id`));
 
-CREATE TABLE `shop`.`user` (
-                               `user_id` INT NOT NULL AUTO_INCREMENT,
-                               `login` VARCHAR(64) NOT NULL,
-                               `password` VARCHAR(64) NOT NULL,
-                               `first_name` VARCHAR(64) NOT NULL,
-                               `last_name` VARCHAR(64) NOT NULL,
-                               `surname` VARCHAR(64) NULL,
-                               `email` VARCHAR(64) NOT NULL,
-                               `phone` VARCHAR(64) NOT NULL,
-                               `address` VARCHAR(64) NULL,
-                               `birth_date` DATE NULL,
-                               PRIMARY KEY (`user_id`),
-                               UNIQUE INDEX `login_UNIQUE` (`login` ASC) VISIBLE,
-                               UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
-                               UNIQUE INDEX `phone_UNIQUE` (`phone` ASC) VISIBLE);
+INSERT INTO `shop`.`product` (`product_id`, `title`, `description`, `price`, `photo`) VALUES ('1', 'Продукт 1', 'Продукт 1', '1000', 'Нет фото');
+INSERT INTO `shop`.`product` (`product_id`, `title`, `description`, `price`, `photo`) VALUES ('2', 'Продукт 2', 'Продукт 2', '2000', 'Нет фото');
+INSERT INTO `shop`.`product` (`product_id`, `title`, `description`, `price`, `photo`) VALUES ('3', 'Продукт 3', 'Продукт 3', '3000', 'Нет фото');
 
-CREATE TABLE `shop`.`role` (
-                               `role_id` INT NOT NULL AUTO_INCREMENT,
-                               `name` VARCHAR(64) NOT NULL,
-                               PRIMARY KEY (`role_id`),
-                               UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE);
+CREATE TABLE `shop`.`users` (
+                                `username` VARCHAR(45) NOT NULL,
+                                `password` VARCHAR(100) NOT NULL,
+                                `enabled` TINYINT(1) NOT NULL,
+                                PRIMARY KEY (`username`));
 
-CREATE TABLE `shop`.`user_role` (
-                                    `user_role_id` INT NOT NULL AUTO_INCREMENT,
-                                    `user_id` INT NOT NULL,
-                                    `role_id` INT NOT NULL,
-                                    PRIMARY KEY (`user_role_id`),
-                                    INDEX `fk_user_role_to_user_idx` (`user_id` ASC) VISIBLE,
-                                    INDEX `fk_user_role_to_role_idx` (`role_id` ASC) VISIBLE,
-                                    CONSTRAINT `fk_user_role_to_user`
-                                        FOREIGN KEY (`user_id`)
-                                            REFERENCES `shop`.`user` (`user_id`)
-                                            ON DELETE NO ACTION
-                                            ON UPDATE NO ACTION,
-                                    CONSTRAINT `fk_user_role_to_role`
-                                        FOREIGN KEY (`role_id`)
-                                            REFERENCES `shop`.`role` (`role_id`)
-                                            ON DELETE NO ACTION
-                                            ON UPDATE NO ACTION);
+INSERT INTO `shop`.`users` (`username`, `password`, `enabled`) VALUES
+                        ('admin', '$2a$10$x6gBLn.6ZH/JeZGIRMetqeW76PBuQq8na40jo5tcfNlwZSmddONae', '1');
+INSERT INTO `shop`.`users` (`username`, `password`, `enabled`) VALUES
+                        ('user', '$2a$10$2XINqOf1dt9Pdr1mkhjGreaPNq8tcoh3ubWqZB7C1to0pXUYCch.q', '1');
+
+CREATE TABLE `shop`.`authorities` (
+                                      `username` VARCHAR(45) NOT NULL,
+                                      `authority` VARCHAR(45) NOT NULL,
+                                      PRIMARY KEY (`username`, `authority`),
+                                      CONSTRAINT `fk_auth_to_user`
+                                          FOREIGN KEY (`username`)
+                                              REFERENCES `shop`.`users` (`username`)
+                                              ON DELETE NO ACTION
+                                              ON UPDATE NO ACTION);
+
+INSERT INTO `shop`.`authorities` (`username`, `authority`) VALUES ('admin', 'ROLE_ADMIN');
+INSERT INTO `shop`.`authorities` (`username`, `authority`) VALUES ('admin', 'ROLE_USER');
+INSERT INTO `shop`.`authorities` (`username`, `authority`) VALUES ('user', 'ROLE_USER');
