@@ -1,41 +1,31 @@
 package com.example.onlineShop.model.entity;
 
 import lombok.Data;
-
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
- * Класс, описывающий роли пользователей
+ * Класс, описывающий роли пользователей (права доступа)
  */
 @Data
 @Entity
-@Table(name = "role")
-public class Role {
+@Table(name = "authorities")
+public class Role implements Serializable {
 
     /**
-     * Уникальный идентификатор
+     * Имя пользователя (логин)
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
-    private int id;
+    @Column(name = "username")
+    private String username;
 
     /**
-     * Название роли пользователя
+     * Роль пользователя (права доступа)
      */
-    @Column(name = "name")
-    private String name;
-
-    /**
-     * Связываем роль с пользователями
-     * @see User
-     */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> users;
+    @Id
+    @Column(name = "authority")
+    private String authority;
 }
