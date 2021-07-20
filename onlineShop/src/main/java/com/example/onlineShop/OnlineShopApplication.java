@@ -11,6 +11,7 @@ public class OnlineShopApplication {
 
 	/**
 	 * Точка входа
+	 *
 	 * @param args Аргументы, передаваемые при запуске приложения
 	 */
 	public static void main(String[] args) {

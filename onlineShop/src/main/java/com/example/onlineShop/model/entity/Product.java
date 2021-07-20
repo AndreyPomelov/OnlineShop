@@ -36,4 +36,10 @@ public class Product {
      */
     @Column(name = "price")
     private double price;
+
+    /**
+     * Ссылка на фотографию
+     */
+    @Column(name = "photo")
+    private String photoLink;
 }

@@ -2,22 +2,25 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Price list</title>
+    <title>Каталог продукции</title>
 </head>
 <body>
+<h1>Каталог продукции</h1>
 <table border="1">
     <tr>
-        <th>ID</th>
         <th>Title</th>
         <th>Description</th>
         <th>Price</th>
+        <th>Photo</th>
     </tr>
     <tr th:each="c : ${products}">
-        <td th:text="${c.getId()}"></td>
         <td th:text="${c.getTitle()}"></td>
         <td th:text="${c.getDescription()}"></td>
         <td th:text="${c.getPrice()}"></td>
     </tr>
 </table>
+<br>
+<br>
+<a href="/index">Главная страница</a>
 </body>
 </html>
