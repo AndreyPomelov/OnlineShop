@@ -34,11 +34,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource);
-//        auth.inMemoryAuthentication()
-//                .passwordEncoder(passwordEncoder())
-//                .withUser("admin")
-//                .password(passwordEncoder().encode("qwe"))
-//                .roles("ADMIN");
     }
 
     @Bean
@@ -54,8 +49,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
-                .and()
-                .httpBasic()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/").hasAnyRole("USER")
