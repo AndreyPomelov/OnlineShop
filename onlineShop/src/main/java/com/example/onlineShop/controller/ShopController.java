@@ -1,6 +1,8 @@
 package com.example.onlineShop.controller;
 
+import com.example.onlineShop.model.entity.User;
 import com.example.onlineShop.model.repository.ProductRepository;
+import com.example.onlineShop.model.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -17,7 +19,9 @@ public class ShopController {
     /**
      * Экземпляр репозитория
      */
-    private final ProductRepository repository;
+    private final ProductRepository productRepository;
+
+    private final UserRepository userRepository;
 
     /**
      * Отображение всех продуктов из БД
@@ -25,10 +29,9 @@ public class ShopController {
      * @return Имя файла шаблона
      */
     @GetMapping(value = "/products")
-    // В целях тестирования пока только для админа
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public String findAllProducts(Model model) {
-        model.addAttribute("products", repository.findAll());
+        model.addAttribute("products", productRepository.findAll());
         return "products";
     }
 
@@ -47,8 +50,15 @@ public class ShopController {
      *
      * @return Имя файла шаблона
      */
-    @GetMapping(value = "index")
+    @GetMapping(value = "")
     public String mainPage() {
         return "index";
+    }
+
+    @GetMapping(value = "/users")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String findAllUsers(Model model) {
+        model.addAttribute("users", userRepository.findAll());
+        return "users";
     }
 }
