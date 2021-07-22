@@ -51,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/").hasAnyRole("USER")
+                .antMatchers("/").permitAll()
                 .antMatchers("/users").hasAnyRole("ADMIN")
                 .antMatchers("/admin/**").hasAnyRole("ADMIN");
     }
