@@ -1,6 +1,6 @@
 package com.example.onlineShop.controller;
 
-import com.example.onlineShop.model.entity.User;
+import com.example.onlineShop.model.entity.Product;
 import com.example.onlineShop.model.repository.ProductRepository;
 import com.example.onlineShop.model.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * Главный контроллер
@@ -60,5 +61,13 @@ public class ShopController {
     public String findAllUsers(Model model) {
         model.addAttribute("users", userRepository.findAll());
         return "users";
+    }
+
+    @GetMapping(value = {"/toCart/{id}"})
+    public String toCart(@PathVariable int id) {
+        //TODO Дописать метод
+        System.out.println("Вызван метод добавления в корзину, ИД товара - " + id);
+        Product product = productRepository.getById(id);
+        return "redirect:/products";
     }
 }
