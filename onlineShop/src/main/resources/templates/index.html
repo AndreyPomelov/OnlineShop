@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Главная страница</title>
@@ -11,5 +12,10 @@
 <br>
 <br>
 <a href="/register">Регистрация</a>
+<br>
+<br>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+<a href="/users">Список пользователей</a>
+</div>
 </body>
 </html>
