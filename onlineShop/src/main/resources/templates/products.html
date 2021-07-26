@@ -12,15 +12,18 @@
         <th>Description</th>
         <th>Price</th>
         <th>Photo</th>
+        <th></th>
     </tr>
     <tr th:each="c : ${products}">
         <td th:text="${c.getTitle()}"></td>
         <td th:text="${c.getDescription()}"></td>
         <td th:text="${c.getPrice()}"></td>
+        <td></td>
+        <td><a th:text="'В корзину'" th:href="@{/toCart/{id}(id=${c.getId()})}"></a></td>
     </tr>
 </table>
 <br>
 <br>
-<a href="/index">Главная страница</a>
+<a href="/">Главная страница</a>
 </body>
 </html>

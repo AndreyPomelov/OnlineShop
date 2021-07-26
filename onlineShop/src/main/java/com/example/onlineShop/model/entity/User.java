@@ -1,10 +1,8 @@
 package com.example.onlineShop.model.entity;
 
 import lombok.Data;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Класс, описывающий пользователя
@@ -32,6 +30,12 @@ public class User {
      */
     @Column(name = "enabled")
     private int enabled;
+
+    /**
+     * Связь пользователя с корзиной
+     */
+    @OneToMany(mappedBy = "user")
+    private List<Cart> cartList;
 
 //    /**
 //     * Имя
