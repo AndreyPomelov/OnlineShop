@@ -2,9 +2,10 @@ package com.example.onlineShop.model.entity;
 
 import lombok.Data;
 import javax.persistence.*;
+import java.util.List;
 
 /**
- * Класс, описывающий продукт
+ * Класс, описывающий товар
  */
 @Data
 @Entity
@@ -42,4 +43,15 @@ public class Product {
      */
     @Column(name = "photo")
     private String photoLink;
+
+    /**
+     * Список корзин, в которых находится данный товар
+     */
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "cart_product",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "cart_id")
+    )
+    private List<Cart> carts;
 }

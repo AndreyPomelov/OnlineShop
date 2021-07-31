@@ -2,6 +2,7 @@ package com.example.onlineShop.model.entity;
 
 import lombok.Data;
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Класс, описывающий корзину с товарами
@@ -22,7 +23,18 @@ public class Cart {
     /**
      * Пользователь, которому принадлежит данная корзина
      */
-    @ManyToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "username")
     private User user;
+
+    /**
+     * Лист товаров, находящихся в данной корзине
+     */
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "cart_product",
+            joinColumns = @JoinColumn(name = "cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<Product> products;
 }
