@@ -2,7 +2,6 @@ package com.example.onlineShop.model.entity;
 
 import lombok.Data;
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Класс, описывающий пользователя
@@ -28,15 +27,17 @@ public class User {
     /**
      * Признак, разрешён ли вход пользователю
      */
-    @Column(name = "enabled")
+    @Column(name = "enabled", columnDefinition = "Tinyint(1) default '0'")
     private int enabled;
 
     /**
      * Связь пользователя с корзиной
      */
-    @OneToMany(mappedBy = "user")
-    private List<Cart> cartList;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "username")
+    private Cart cart;
 
+    //TODO Реализовать следующие поля в БД
 //    /**
 //     * Имя
 //     */
