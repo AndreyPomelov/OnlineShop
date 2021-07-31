@@ -89,13 +89,22 @@ public class ShopController {
     public String toCart(@PathVariable int id) {
         //TODO Дописать метод
         Product product = productRepository.getById(id);
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = currentUserName();
         // TODO Следующая строка вызывает
         // TODO TypeMismatchException: Provided id of the wrong type for class com.example.onlineShop.model.entity.Cart. Expected: class java.lang.Integer, got class java.lang.String
         // TODO Что-то не так с инициализацией корзины, принадлежащей пользователю. Разобраться
         User user = userRepository.getById(username);
         //user.getCart().getProducts().add(product);
         return "redirect:/products";
+    }
+
+    /**
+     * Метод, возвращающий имя текущего пользователя
+     * 
+     * @return Имя пользователя
+     */
+    private String currentUserName() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     /**
