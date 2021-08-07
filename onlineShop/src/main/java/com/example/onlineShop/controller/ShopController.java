@@ -1,20 +1,17 @@
 package com.example.onlineShop.controller;
 
+import com.example.onlineShop.model.entity.Cart;
 import com.example.onlineShop.model.entity.Product;
 import com.example.onlineShop.model.entity.User;
 import com.example.onlineShop.model.repository.ProductRepository;
 import com.example.onlineShop.model.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import javax.transaction.Transactional;
 
 /**
  * Главный контроллер
@@ -94,7 +91,7 @@ public class ShopController {
         // TODO TypeMismatchException: Provided id of the wrong type for class com.example.onlineShop.model.entity.Cart. Expected: class java.lang.Integer, got class java.lang.String
         // TODO Что-то не так с инициализацией корзины, принадлежащей пользователю. Разобраться
         User user = userRepository.getById(username);
-        //user.getCart().getProducts().add(product);
+        Cart cart = user.getCart();
         return "redirect:/products";
     }
 
