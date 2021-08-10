@@ -5,6 +5,7 @@ import com.example.onlineShop.model.entity.Product;
 import com.example.onlineShop.model.entity.User;
 import com.example.onlineShop.model.repository.ProductRepository;
 import com.example.onlineShop.model.repository.UserRepository;
+import com.example.onlineShop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +30,8 @@ public class ShopController {
      * Экземпляр репозитория пользователей
      */
     private final UserRepository userRepository;
+
+    private final UserService userService;
 
     /**
      * Отображение всех продуктов из БД
@@ -86,12 +89,15 @@ public class ShopController {
     public String toCart(@PathVariable int id) {
         //TODO Дописать метод
         Product product = productRepository.getById(id);
+        System.out.println(product.getCarts().get(0).getUser().getLogin());
         String username = currentUserName();
+        User user = userService.getByUsername(username);
+        System.out.println(user.getLogin());
         // TODO Следующая строка вызывает
         // TODO TypeMismatchException: Provided id of the wrong type for class com.example.onlineShop.model.entity.Cart. Expected: class java.lang.Integer, got class java.lang.String
         // TODO Что-то не так с инициализацией корзины, принадлежащей пользователю. Разобраться
-        User user = userRepository.getById(username);
-        Cart cart = user.getCart();
+        // TODO Какая-то проблема со связью корзины и пользователя. Как только я убираю переменную Cart cart из класса User, всё сразу начинает работать.
+        // TODO Но она там нужна.
         return "redirect:/products";
     }
 

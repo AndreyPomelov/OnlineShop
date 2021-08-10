@@ -1,12 +1,13 @@
 package com.example.onlineShop.model.entity;
 
 import lombok.Data;
+import lombok.ToString;
+
 import javax.persistence.*;
 
 /**
  * Класс, описывающий пользователя
  */
-@Data
 @Entity
 @Table(name = "users")
 public class User {
@@ -30,12 +31,44 @@ public class User {
     @Column(name = "enabled", columnDefinition = "Tinyint(1) default '0'")
     private int enabled;
 
-    /**
-     * Связь пользователя с корзиной
-     */
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "username")
-    private Cart cart;
+//    /**
+//     * Связь пользователя с корзиной
+//     */
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "username")
+//    private Cart cart;
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
+    }
+
+//    public Cart getCart() {
+//        return cart;
+//    }
+//
+//    public void setCart(Cart cart) {
+//        this.cart = cart;
+//    }
 
     //TODO Реализовать следующие поля в БД
 //    /**
