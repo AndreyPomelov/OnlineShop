@@ -86,18 +86,17 @@ public class ShopController {
      */
     @GetMapping(value = {"/toCart/{id}"})
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
-    public String toCart(@PathVariable int id) {
-        //TODO Дописать метод
+    public String toCart(@PathVariable String id) {
+        //TODO Проблему решил, про которую писал в комментарии.
+        //Далее в этом методе просто тестовый код, не имеющий практического смысла.
+        //Дописать метод.
         Product product = productRepository.getById(id);
         System.out.println(product.getCarts().get(0).getUser().getLogin());
         String username = currentUserName();
         User user = userService.getByUsername(username);
+        Cart cart = user.getCart();
         System.out.println(user.getLogin());
-        // TODO Следующая строка вызывает
-        // TODO TypeMismatchException: Provided id of the wrong type for class com.example.onlineShop.model.entity.Cart. Expected: class java.lang.Integer, got class java.lang.String
-        // TODO Что-то не так с инициализацией корзины, принадлежащей пользователю. Разобраться
-        // TODO Какая-то проблема со связью корзины и пользователя. Как только я убираю переменную Cart cart из класса User, всё сразу начинает работать.
-        // TODO Но она там нужна.
+        test(cart);
         return "redirect:/products";
     }
 

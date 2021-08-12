@@ -17,7 +17,7 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
-    private Integer id;
+    private String id;
 
     /**
      * Пользователь, которому принадлежит данная корзина
@@ -37,11 +37,11 @@ public class Cart {
     )
     private List<Product> products;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

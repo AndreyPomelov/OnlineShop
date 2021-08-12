@@ -21,7 +21,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    private Integer id;
+    private String id;
 
     /**
      * Название
@@ -58,11 +58,11 @@ public class Product {
     )
     private List<Cart> carts;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

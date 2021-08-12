@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Репозиторий корзин
  */
-public interface CartRepository extends JpaRepository<Cart, Integer> {
+public interface CartRepository extends JpaRepository<Cart, String> {
 }

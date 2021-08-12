@@ -31,12 +31,11 @@ public class User {
     @Column(name = "enabled", columnDefinition = "Tinyint(1) default '0'")
     private int enabled;
 
-//    /**
-//     * Связь пользователя с корзиной
-//     */
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "username")
-//    private Cart cart;
+    /**
+     * Связь пользователя с корзиной
+     */
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
 
     public String getLogin() {
         return login;
@@ -62,13 +61,13 @@ public class User {
         this.enabled = enabled;
     }
 
-//    public Cart getCart() {
-//        return cart;
-//    }
-//
-//    public void setCart(Cart cart) {
-//        this.cart = cart;
-//    }
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 
     //TODO Реализовать следующие поля в БД
 //    /**
