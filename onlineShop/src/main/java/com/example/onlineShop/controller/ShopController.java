@@ -31,6 +31,10 @@ public class ShopController {
      */
     private final UserRepository userRepository;
 
+    /**
+     * Экземпляр сервиса пользователей
+     * Пока как тест. Возможно не понадобится
+     */
     private final UserService userService;
 
     /**
@@ -67,6 +71,7 @@ public class ShopController {
 
     /**
      * Отображение списка пользователей
+     * Только для пользователей с правами админа
      *
      * @param model Модель для добавления атрибутов
      * @return Имя файла шаблона

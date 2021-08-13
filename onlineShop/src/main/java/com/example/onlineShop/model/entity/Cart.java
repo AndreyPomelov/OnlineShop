@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * Класс, описывающий корзину с товарами
  */
+@Data
 @Entity
 @Table(name = "cart")
 public class Cart {
@@ -36,28 +37,4 @@ public class Cart {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Product> products;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
 }

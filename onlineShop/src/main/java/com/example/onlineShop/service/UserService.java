@@ -1,27 +1,35 @@
 package com.example.onlineShop.service;
 
 import com.example.onlineShop.model.entity.User;
-import com.example.onlineShop.model.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+/**
+ * Репозиторий пользователей
+ * Пока тестовый вариант
+ * Возможно не понадобится
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
-
+    /**
+     * Экземпляр менеджера сущностей
+     */
     private final EntityManager entityManager;
 
+    /**
+     * Метод, находящий пользователя в БД по логину
+     *
+     * @param username Логин
+     * @return Найденный пользователь
+     */
     @Transactional
     public User getByUsername(String username) {
-        //entityManager.getTransaction().begin();
         User user = entityManager.find(User.class, username);
-        //entityManager.getTransaction().commit();
         return user;
     }
 }
