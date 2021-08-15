@@ -50,16 +50,6 @@ public class ShopController {
     }
 
     /**
-     * Переход на страницу регистрации
-     *
-     * @return Имя файла шаблона
-     */
-    @GetMapping(value = "/register")
-    public String register() {
-        return "register";
-    }
-
-    /**
      * Переход на главную страницу
      *
      * @return Имя файла шаблона
@@ -99,6 +89,7 @@ public class ShopController {
         System.out.println(product.getCarts().get(0).getUser().getLogin());
         String username = currentUserName();
         User user = userService.getByUsername(username);
+        System.out.println("USERNAME " + user.getLogin());
         Cart cart = user.getCart();
         System.out.println(user.getLogin());
         test(cart);

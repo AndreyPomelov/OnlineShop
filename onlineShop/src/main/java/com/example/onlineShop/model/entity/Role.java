@@ -1,10 +1,7 @@
 package com.example.onlineShop.model.entity;
 
 import lombok.Data;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -13,6 +10,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "authorities")
+@IdClass(RolePK.class)
 public class Role implements Serializable {
 
     /**
