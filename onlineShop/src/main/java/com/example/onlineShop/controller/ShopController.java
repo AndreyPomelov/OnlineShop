@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +36,9 @@ public class ShopController {
      */
     private final UserRepository userRepository;
 
+    /**
+     * Экземпляр репозитория истории заказов
+     */
     private final OrderRepository orderRepository;
 
     /**
@@ -118,6 +120,12 @@ public class ShopController {
         System.out.println("TEST");
     }
 
+    /**
+     * Отображение на экране корзины пользователя
+     *
+     * @param model Модель для добавления атрибутов
+     * @return Имя файла шаблона
+     */
     @GetMapping(value = "/cart")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public String showCart(Model model) {
@@ -128,6 +136,12 @@ public class ShopController {
         return "cart";
     }
 
+    /**
+     * Удаление указанного товара из корзины
+     *
+     * @param id Идентификатор товара
+     * @return Имя файла шаблона
+     */
     @GetMapping(value = {"/removeFromCart/{id}"})
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @Transactional
@@ -139,6 +153,14 @@ public class ShopController {
         return "removed";
     }
 
+    /**
+     * Оформление заказа,
+     * перенос заказа в историю заказов
+     * и очистка корзины
+     *
+     * @param model Модель для добавления атрибутов
+     * @return Имя файла шаблона
+     */
     @GetMapping(value = "/order")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @Transactional
@@ -152,6 +174,11 @@ public class ShopController {
         return "order";
     }
 
+    /**
+     * Сохранение заказа в истории заказов
+     *
+     * @param products Список продуктов в оформленном заказе
+     */
     private void saveOrderHistory(List<Product> products) {
         for (Product product : products) {
             Order order = new Order();
