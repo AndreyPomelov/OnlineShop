@@ -33,8 +33,7 @@ public class User {
     /**
      * Связь пользователя с корзиной
      */
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "username")
+    @OneToOne(mappedBy = "user")
     private Cart cart;
 
     //TODO Реализовать следующие поля в БД

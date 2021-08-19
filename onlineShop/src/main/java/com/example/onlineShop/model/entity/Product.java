@@ -18,7 +18,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    private int id;
+    private String id;
 
     /**
      * Название
@@ -47,7 +47,7 @@ public class Product {
     /**
      * Список корзин, в которых находится данный товар
      */
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "cart_product",
             joinColumns = @JoinColumn(name = "product_id"),

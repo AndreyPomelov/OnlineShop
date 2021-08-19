@@ -18,19 +18,19 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
-    private int id;
+    private String id;
 
     /**
      * Пользователь, которому принадлежит данная корзина
      */
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "username")
     private User user;
 
     /**
      * Лист товаров, находящихся в данной корзине
      */
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "cart_product",
             joinColumns = @JoinColumn(name = "cart_id"),
