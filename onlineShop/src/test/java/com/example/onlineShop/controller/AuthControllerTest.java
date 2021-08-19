@@ -1,20 +1,17 @@
-package com.example.onlineShop.integration;
+package com.example.onlineShop.controller;
 
-import com.example.onlineShop.OnlineShopApplicationTests;
-import com.example.onlineShop.controller.AuthController;
-import com.example.onlineShop.model.entity.Cart;
-import com.example.onlineShop.model.entity.User;
 import com.example.onlineShop.model.repository.RoleRepository;
 import com.example.onlineShop.model.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.ui.ConcurrentModel;
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 
-public class PositiveTest extends OnlineShopApplicationTests {
+class AuthControllerTest {
 
     private AuthController authController;
 
@@ -27,7 +24,19 @@ public class PositiveTest extends OnlineShopApplicationTests {
     }
 
     @Test
-    public void saveNewUserTest() {
-        // TODO
+    public void loginTest() {
+        String actual = authController.login();
+        assertNotNull(actual);
+        // Далее два способа проверки с помощью разных библиотек
+        assertEquals("login", actual);
+        assertThat(actual).isEqualTo("login");
     }
+
+    @Test
+    public void registerTest() {
+        String actual = authController.register(new ConcurrentModel());
+        assertNotNull(actual);
+        assertEquals("register", actual);
+    }
+
 }
