@@ -1,5 +1,6 @@
 package com.example.onlineShop.controller;
 
+import com.example.onlineShop.data.OrderStatus;
 import com.example.onlineShop.model.entity.Cart;
 import com.example.onlineShop.model.entity.Order;
 import com.example.onlineShop.model.entity.Product;
@@ -169,7 +170,7 @@ public class ShopController {
         model.addAttribute("products", products);
         double sum = products.stream().mapToDouble(Product::getPrice).sum();
         model.addAttribute("sum", sum);
-        saveOrderHistory(products);
+        saveOrderHistory(products, OrderStatus.ORDERED);
         userRepository.getById(currentUserName()).getCart().getProducts().clear();
         return "order";
     }
@@ -179,13 +180,14 @@ public class ShopController {
      *
      * @param products Список продуктов в оформленном заказе
      */
-    private void saveOrderHistory(List<Product> products) {
+    private void saveOrderHistory(List<Product> products, OrderStatus status) {
         for (Product product : products) {
             Order order = new Order();
             order.setUsername(currentUserName());
             order.setProductId(product.getId());
             order.setPrice(product.getPrice());
             order.setDate(new Date());
+            order.setOrderStatus(status.getValue());
             orderRepository.save(order);
         }
     }
