@@ -192,4 +192,14 @@ public class ShopController {
             orderRepository.save(order);
         }
     }
+
+    @GetMapping(value = "/clear")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @Transactional
+    public String clearCart() {
+        List<Product> products = userRepository.getById(currentUserName()).getCart().getProducts();
+        saveOrderHistory(products, OrderStatus.CANCELED);
+        products.clear();
+        return "cart_clear";
+    }
 }
