@@ -193,6 +193,11 @@ public class ShopController {
         }
     }
 
+    /**
+     * Очистка корзины
+     *
+     * @return Имя файла шаблона
+     */
     @GetMapping(value = "/clear")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @Transactional
