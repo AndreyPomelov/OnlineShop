@@ -151,6 +151,7 @@ public class ShopController {
         User user = userRepository.getById(currentUserName());
         Cart cart = user.getCart();
         cart.getProducts().remove(product);
+        saveOrderHistory(List.of(product), OrderStatus.CANCELED);
         return "removed";
     }
 
