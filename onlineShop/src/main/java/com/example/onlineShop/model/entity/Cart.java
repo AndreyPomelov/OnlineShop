@@ -16,7 +16,6 @@ public class Cart {
      * Уникальный идентификатор
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
     private String id;
 
@@ -30,7 +29,7 @@ public class Cart {
     /**
      * Лист товаров, находящихся в данной корзине
      */
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "cart_product",
             joinColumns = @JoinColumn(name = "cart_id"),

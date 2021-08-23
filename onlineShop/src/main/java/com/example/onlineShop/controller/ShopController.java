@@ -1,8 +1,11 @@
 package com.example.onlineShop.controller;
 
+import com.example.onlineShop.data.OrderStatus;
 import com.example.onlineShop.model.entity.Cart;
+import com.example.onlineShop.model.entity.Order;
 import com.example.onlineShop.model.entity.Product;
 import com.example.onlineShop.model.entity.User;
+import com.example.onlineShop.model.repository.OrderRepository;
 import com.example.onlineShop.model.repository.ProductRepository;
 import com.example.onlineShop.model.repository.UserRepository;
 import com.example.onlineShop.service.UserService;
@@ -10,9 +13,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Главный контроллер
@@ -30,6 +36,11 @@ public class ShopController {
      * Экземпляр репозитория пользователей
      */
     private final UserRepository userRepository;
+
+    /**
+     * Экземпляр репозитория истории заказов
+     */
+    private final OrderRepository orderRepository;
 
     /**
      * Экземпляр сервиса пользователей
@@ -81,19 +92,13 @@ public class ShopController {
      */
     @GetMapping(value = {"/toCart/{id}"})
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @Transactional
     public String toCart(@PathVariable String id) {
-        //TODO Проблему решил, про которую писал в комментарии.
-        //Далее в этом методе просто тестовый код, не имеющий практического смысла.
-        //Дописать метод.
         Product product = productRepository.getById(id);
-        System.out.println(product.getCarts().get(0).getUser().getLogin());
-        String username = currentUserName();
-        User user = userService.getByUsername(username);
-        System.out.println("USERNAME " + user.getLogin());
+        User user = userRepository.getById(currentUserName());
         Cart cart = user.getCart();
-        System.out.println(user.getLogin());
-        test(cart);
-        return "redirect:/products";
+        cart.getProducts().add(product);
+        return "added";
     }
 
     /**
@@ -114,5 +119,92 @@ public class ShopController {
         System.out.println("TEST");
         System.out.println(o);
         System.out.println("TEST");
+    }
+
+    /**
+     * Отображение на экране корзины пользователя
+     *
+     * @param model Модель для добавления атрибутов
+     * @return Имя файла шаблона
+     */
+    @GetMapping(value = "/cart")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    public String showCart(Model model) {
+        List<Product> products = userRepository.getById(currentUserName()).getCart().getProducts();
+        model.addAttribute("products", products);
+        double sum = products.stream().mapToDouble(Product::getPrice).sum();
+        model.addAttribute("sum", sum);
+        return "cart";
+    }
+
+    /**
+     * Удаление указанного товара из корзины
+     *
+     * @param id Идентификатор товара
+     * @return Имя файла шаблона
+     */
+    @GetMapping(value = {"/removeFromCart/{id}"})
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @Transactional
+    public String removeFromCart(@PathVariable String id) {
+        Product product = productRepository.getById(id);
+        User user = userRepository.getById(currentUserName());
+        Cart cart = user.getCart();
+        cart.getProducts().remove(product);
+        saveOrderHistory(List.of(product), OrderStatus.CANCELED);
+        return "removed";
+    }
+
+    /**
+     * Оформление заказа,
+     * перенос заказа в историю заказов
+     * и очистка корзины
+     *
+     * @param model Модель для добавления атрибутов
+     * @return Имя файла шаблона
+     */
+    @GetMapping(value = "/order")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @Transactional
+    public String order(Model model) {
+        List<Product> products = userRepository.getById(currentUserName()).getCart().getProducts();
+        model.addAttribute("products", products);
+        double sum = products.stream().mapToDouble(Product::getPrice).sum();
+        model.addAttribute("sum", sum);
+        saveOrderHistory(products, OrderStatus.ORDERED);
+        userRepository.getById(currentUserName()).getCart().getProducts().clear();
+        return "order";
+    }
+
+    /**
+     * Сохранение заказа в истории заказов
+     *
+     * @param products Список продуктов в оформленном заказе
+     */
+    private void saveOrderHistory(List<Product> products, OrderStatus status) {
+        for (Product product : products) {
+            Order order = new Order();
+            order.setUsername(currentUserName());
+            order.setProductId(product.getId());
+            order.setPrice(product.getPrice());
+            order.setDate(new Date());
+            order.setOrderStatus(status.getValue());
+            orderRepository.save(order);
+        }
+    }
+
+    /**
+     * Очистка корзины
+     *
+     * @return Имя файла шаблона
+     */
+    @GetMapping(value = "/clear")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @Transactional
+    public String clearCart() {
+        List<Product> products = userRepository.getById(currentUserName()).getCart().getProducts();
+        saveOrderHistory(products, OrderStatus.CANCELED);
+        products.clear();
+        return "cart_clear";
     }
 }

@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Каталог продукции</title>
+    <title>Корзина</title>
 </head>
 <body>
-<h1>Каталог продукции</h1>
+<h1>Корзина</h1>
 <table border="1">
     <tr>
         <th>Title</th>
@@ -19,7 +19,14 @@
         <td th:text="${c.getDescription()}"></td>
         <td th:text="${c.getPrice()}"></td>
         <td></td>
-        <td><a th:text="'В корзину'" th:href="@{/toCart/{id}(id=${c.getId()})}"></a></td>
+        <td><a th:text="'Удалить из корзины'" th:href="@{/removeFromCart/{id}(id=${c.getId()})}"></a></td>
+    </tr>
+    <tr>
+        <td>Итого</td>
+        <td></td>
+        <td th:text="${sum}"></td>
+        <td></td>
+        <td></td>
     </tr>
 </table>
 <br>
@@ -27,6 +34,12 @@
 <a href="/">Главная страница</a>
 <br>
 <br>
-<a href="/cart">Показать корзину</a>
+<a href="/products">К списку продуктов</a>
+<br>
+<br>
+<a href="/order">Оформить заказ</a>
+<br>
+<br>
+<a href="/clear">Очистить корзину</a>
 </body>
 </html>
