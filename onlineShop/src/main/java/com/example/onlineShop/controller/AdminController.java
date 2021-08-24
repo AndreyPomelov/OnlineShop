@@ -70,8 +70,37 @@ public class AdminController {
     @GetMapping(value = {"/blockUser/{id}"})
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
-    public String toCart(@PathVariable String id) {
+    public String blockUser(@PathVariable String id) {
         userRepository.getById(id).setEnabled(0);
         return "blocked";
+    }
+
+    /**
+     * Отображение списка заблокированных пользователей
+     *
+     * @param model Модель для добавления атрибутов
+     * @return Имя файла шаблона
+     */
+    @GetMapping(value = "/banned")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String banList(Model model) {
+        model.addAttribute("users", userRepository.findAll()
+                .stream().filter(x -> x.getEnabled() == 0)
+                .collect(Collectors.toList()));
+        return "banned";
+    }
+
+    /**
+     * Разблокировка пользователя
+     *
+     * @param id Идентификатор пользователя
+     * @return Имя файла шаблона
+     */
+    @GetMapping(value = {"/unblockUser/{id}"})
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Transactional
+    public String unblockUser(@PathVariable String id) {
+        userRepository.getById(id).setEnabled(1);
+        return "unblocked";
     }
 }

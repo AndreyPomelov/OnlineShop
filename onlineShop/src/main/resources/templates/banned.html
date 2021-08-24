@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Бан-лист</title>
+</head>
+<body>
+<h1>Бан-лист</h1>
+<table border="1">
+  <tr>
+    <th>Логин</th>
+    <th>Разрешён</th>
+    <th></th>
+  </tr>
+  <tr th:each="c : ${users}">
+    <td th:text="${c.getLogin()}"></td>
+    <td th:text="${c.getEnabled()}"></td>
+    <td><a th:text="'Разблокировать'" th:href="@{/unblockUser/{id}(id=${c.getLogin()})}"></a></td>
+  </tr>
+</table>
+<br>
+<br>
+<a href="/admin">Панель администратора</a>
+</body>
+</html>
