@@ -1,5 +1,6 @@
 package com.example.onlineShop.controller;
 
+import com.example.onlineShop.model.entity.Product;
 import com.example.onlineShop.model.repository.OrderRepository;
 import com.example.onlineShop.model.repository.ProductRepository;
 import com.example.onlineShop.model.repository.UserRepository;
@@ -10,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -102,5 +105,26 @@ public class AdminController {
     public String unblockUser(@PathVariable String id) {
         userRepository.getById(id).setEnabled(1);
         return "unblocked";
+    }
+
+    /**
+     * Добавление нового продукта в БД
+     *
+     * @param model Модель для добавления атрибутов
+     * @return Имя файла шаблона
+     */
+    @GetMapping(value = "/add_product")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String addProduct(Model model) {
+        model.addAttribute("product", new Product());
+        return "add_product";
+    }
+
+    @PostMapping(value = "/add_product")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String addProduct(Product product) {
+        product.setId(UUID.randomUUID().toString());
+        productRepository.save(product);
+        return "product_added";
     }
 }
