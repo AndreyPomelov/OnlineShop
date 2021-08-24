@@ -10,14 +10,16 @@
   <tr>
     <th>Логин</th>
     <th>Разрешён</th>
+    <th></th>
   </tr>
   <tr th:each="c : ${users}">
     <td th:text="${c.getLogin()}"></td>
     <td th:text="${c.getEnabled()}"></td>
+    <td><a th:text="'Заблокировать'" th:href="@{/blockUser/{id}(id=${c.getLogin()})}"></a></td>
   </tr>
 </table>
 <br>
 <br>
-<a href="/">Главная страница</a>
+<a href="/admin">Панель администратора</a>
 </body>
 </html>

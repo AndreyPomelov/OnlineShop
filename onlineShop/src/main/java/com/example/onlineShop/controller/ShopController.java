@@ -71,20 +71,6 @@ public class ShopController {
     }
 
     /**
-     * Отображение списка пользователей
-     * Только для пользователей с правами админа
-     *
-     * @param model Модель для добавления атрибутов
-     * @return Имя файла шаблона
-     */
-    @GetMapping(value = "/users")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public String findAllUsers(Model model) {
-        model.addAttribute("users", userRepository.findAll());
-        return "users";
-    }
-
-    /**
      * Метод, добавляющий указанный товар в корзину
      *
      * @param id Идентификатор товара
