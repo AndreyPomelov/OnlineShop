@@ -120,11 +120,45 @@ public class AdminController {
         return "add_product";
     }
 
+    /**
+     * Сохранение нового продукта в БД
+     *
+     * @param product Новый продукт
+     * @return Имя файла шаблона
+     */
     @PostMapping(value = "/add_product")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String addProduct(Product product) {
         product.setId(UUID.randomUUID().toString());
         productRepository.save(product);
         return "product_added";
+    }
+
+    /**
+     * Переход на страницу с удалением продуктов из БД
+     *
+     * @param model Модель для добавления атрибутов
+     * @return Имя файла шаблона
+     */
+    @GetMapping(value = "delete_product")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String deleteProduct(Model model) {
+        model.addAttribute("products", productRepository.findAll());
+        return "delete_product";
+    }
+
+    /**
+     * Удаление продукта из БД
+     *
+     * @param id Идентификатор продукта
+     * @return Имя файла шаблона
+     */
+    @GetMapping(value = {"/delete_prod/{id}"})
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Transactional
+    public String deleteProd(@PathVariable String id) {
+        Product product = productRepository.getById(id);
+        productRepository.delete(product);
+        return "product_deleted";
     }
 }
