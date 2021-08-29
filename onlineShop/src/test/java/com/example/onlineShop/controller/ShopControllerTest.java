@@ -14,6 +14,8 @@ class ShopControllerTest {
 
     private ShopController shopController;
 
+    private AdminController adminController;
+
     @BeforeEach
     public void setUp() {
         ProductRepository mockProductRepository = mock(ProductRepository.class);
@@ -38,7 +40,7 @@ class ShopControllerTest {
 
     @Test
     public void findAllUsersTest() {
-        String actual = shopController.findAllUsers(new ConcurrentModel());
+        String actual = adminController.findAllUsers(new ConcurrentModel());
         assertNotNull(actual);
         assertEquals("users", actual);
     }
